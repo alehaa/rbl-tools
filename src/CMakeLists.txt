@@ -25,3 +25,4 @@
 # recurse into subdirectories
 #
 add_subdirectory(librbl)
+add_subdirectory(ckrbl)

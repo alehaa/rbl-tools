@@ -22,43 +22,24 @@
 
 
 #
-# build shared library
+# build ckrbl
 #
-add_library(rbl_shared SHARED
-	lookup.c
+add_executable(ckrbl
+	ckrbl.c
 )
 
-set_target_properties(rbl_shared PROPERTIES
-	VERSION 0.1
-	SOVERSION 0
-	OUTPUT_NAME rbl
+target_include_directories(ckrbl PUBLIC
+	../librbl
 )
 
-
-#
-# build static library
-#
-add_library(rbl_static STATIC
-	lookup.c
-)
-
-set_target_properties(rbl_static PROPERTIES
-	OUTPUT_NAME rbl
-)
-
-
-
-#
-# install libraries
-#
-install(TARGETS rbl_shared rbl_static
-	LIBRARY DESTINATION lib
-	ARCHIVE DESTINATION lib
+target_link_libraries(ckrbl
+	rbl_shared
 )
 
 
 #
-# install header
+# install ckrbl
 #
-install(FILES rbl.h DESTINATION include
+install(TARGETS ckrbl
+	DESTINATION bin
 )
