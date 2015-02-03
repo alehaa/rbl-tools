@@ -25,6 +25,7 @@
 # build shared library
 #
 add_library(rbl_shared SHARED
+	atoip.c
 	lookup.c
 )
 
@@ -39,6 +40,7 @@ set_target_properties(rbl_shared PROPERTIES
 # build static library
 #
 add_library(rbl_static STATIC
+	atoip.c
 	lookup.c
 )
 

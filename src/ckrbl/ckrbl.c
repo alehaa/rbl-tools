@@ -28,7 +28,11 @@
 int
 main(int argc, char **argv)
 {
-	int i = rbl_lookup(argv[1], argv[2], NULL);
+	char ip[64];
+	rbl_atoip(argv[1], ip);
+
+
+	int i = rbl_lookup(ip, argv[2], NULL);
 
 	if (i == 1)
 		printf("blocked\n");

@@ -27,6 +27,7 @@
  * function declarations
  */
 int rbl_lookup(const char *ip, const char *rbl_domain, char *desc);
+int rbl_atoip(const char *src, char *dest);
 
 
 #endif // LIBRBL_H
