@@ -26,6 +26,7 @@
 #
 add_executable(ckrbl
 	ckrbl.c
+	usage.c
 )
 
 target_include_directories(ckrbl PUBLIC

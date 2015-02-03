@@ -21,25 +21,78 @@
 
 /* include headers
  */
+#include "ckrbl.h"
+
+#include <getopt.h>
 #include <stdio.h>
+#include <stdlib.h>
+
 #include <rbl.h>
 
 
 int
 main(int argc, char **argv)
 {
+	/*
+	 * general config
+	 */
+	verbose_level_t verbose_level = ALL;
+
+	const char *blacklist = "pbl.spamhaus.org";
+
+	/*
+	 * get comand line options
+	 */
+	int opt;
+	while ((opt = getopt(argc, argv, "b:fq")) != -1) {
+		switch (opt) {
+			case 'b': blacklist = optarg; break;
+
+			case 'f': verbose_level = LISTED; break;
+
+			case 'q': verbose_level = QUIET; break;
+
+			default: print_usage(); exit(EXIT_FAILURE);
+		}
+	}
+
+	/*
+	 * convert IP into reverse format
+	 */
+	if (optind >= argc) {
+		fprintf(stderr, "Expected IP after options\n\n");
+		print_usage();
+		exit(EXIT_FAILURE);
+	}
+
 	char ip[64];
-	rbl_atoip(argv[1], ip);
+	if (rbl_atoip(argv[optind], ip) != 0) {
+		fprintf(stderr, "IP is invalid\n");
+		exit(EXIT_FAILURE);
+	}
 
 
-	int i = rbl_lookup(ip, argv[2], NULL);
+	/*
+	 * lookup IP in rbl
+	 */
+	printf("%s: ", blacklist);
+	switch (rbl_lookup(ip, blacklist, NULL)) {
+		case 1:
+			if (verbose_level != QUIET)
+				printf("blocked\n");
 
-	if (i == 1)
-		printf("blocked\n");
-	else if (i == 0)
-		printf("not blocked\n");
-	else
-		printf("an error occured\n");
+			break;
 
+		case 0:
+			if (verbose_level == ALL)
+				printf("not blocked\n");
+
+		default:
+			if (verbose_level != QUIET)
+				printf("an error occued\n");
+	}
+
+
+	// exit normal
 	return 0;
 }
