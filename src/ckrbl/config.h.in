@@ -19,31 +19,11 @@
  */
 
 
-#ifndef CKRBL_H
-#define CKRBL_H
+#ifndef CKRBL_CONFIG_H
+#define CKRBL_CONFIG_H
 
 
-/* include headers
- */
-#include <stdio.h>
+#define DEFAULT_BLACKLIST_FILE "@CMAKE_INSTALL_PREFIX@/etc/rbl.conf"
 
 
-/* enums
- */
-typedef enum { ALL, LISTED, QUIET } verbose_level_t;
-
-
-/* global variables
- */
-verbose_level_t verbose_level;
-
-
-/* function declarations
- */
-void print_usage(FILE *stream);
-int lookup(const char *ip, const char *rbl_domain);
-int lookup_string(const char *ip, char *blacklists);
-int lookup_file(const char *ip, const char *blacklist_file);
-
-
-#endif // CKRBL_H
+#endif // CKRBL_CONFIG_H

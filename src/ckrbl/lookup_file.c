@@ -23,59 +23,58 @@
  */
 #include "ckrbl.h"
 
-#include <rbl.h>
-
-#include "terminfo.h"
+#include <stdio.h>
 
 
-/* color definitions
- */
-#define ANSI_COLOR_RED "\x1b[31m"
-#define ANSI_COLOR_YELLOW "\x1b[33m"
-#define ANSI_COLOR_GREEN "\x1b[32m"
-#define ANSI_COLOR_RESET "\x1b[0m"
-
-
-/** \brief Lookup \p IP in \p rbl_domain and print out the result.
+/** \brief Check \p ip against any blacklist in file \p blacklist_file.
  *
  *
  * \param ip Reverse dotted IP (v4 or v6)
- * \param rbl_domain The RBL domain to be used
+ * \param blacklist_file File containing a list of blacklist domains
  *
  * \return Returns positive value, if \p ip is listed in \p rbl_domain or zero
  *  if it is not listed. On error a negative value will be returned.
  */
 int
-lookup(const char *ip, const char *rbl_domain)
+lookup_file(const char *ip, const char *blacklist_file)
 {
-	// do the rbl lookup
-	int ret = rbl_lookup(ip, rbl_domain, NULL);
+	int ret = 0;
 
-	// evaluate rbl lookup
-	char *color = ANSI_COLOR_RED;
-	char *status = "LISTED";
+	// try to open file
+	FILE *fs;
+	fs = fopen(blacklist_file, "r");
 
-	switch (ret) {
-		case 0:
-			color = ANSI_COLOR_GREEN;
-			status = "  OK  ";
-			break;
+	if (fs == NULL)
+		return -1;
 
-		case 1: break;
 
-		case -1:
-		default:
-			color = ANSI_COLOR_YELLOW;
-			status = "UNKNOW";
-			break;
+	// read file line by line
+	char *buffer = NULL;
+	size_t len = 0;
+
+	while ((getline(&buffer, &len, fs)) != -1) {
+		char *p = buffer;
+
+		// skip leeding spaces and tabs
+		while (*p == ' ' || *p == '\t')
+			p++;
+
+		// is line a comment or a blank line?
+		if (*p == '#' || *p == '\n')
+			continue;
+
+		// replace comments, spaces and newlines after blacklist domain
+		for (char *q = p; *p + 1; q++) {
+			if (*q == ' ' || *q == '#' || *q == '\n' || *q == '\t') {
+				*q = '\0';
+				break;
+			}
+		}
+
+		// check IP in blacklist
+		if (lookup(ip, p) != 0)
+			ret = 1;
 	}
 
-	// print lookup result
-	if (verbose_level != QUIET && !(verbose_level == LISTED && ret == 0)) {
-		printf("%-*s [%s%s%s] \n", terminal_width - 10, rbl_domain, color,
-		       status, ANSI_COLOR_RESET);
-	}
-
-	// return result
 	return ret;
 }

@@ -20,19 +20,8 @@
 #   2015 Alexander Haase <alexander.haase@rwth-aachen.de>
 #
 
+# configure rbl.conf
+configure_file(rbl.conf.in "${CMAKE_CURRENT_BINARY_DIR}/rbl.conf")
 
-# minimum required cmake version
-cmake_minimum_required(VERSION 2.6)
-
-
-#
-# project information
-#
-project("rbl-tools")
-
-
-#
-# recurse into subdirectories
-#
-add_subdirectory(conf)
-add_subdirectory(src)
+# install rbl.conf
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/rbl.conf" DESTINATION etc)

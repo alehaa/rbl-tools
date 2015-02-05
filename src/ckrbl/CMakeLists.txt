@@ -22,11 +22,18 @@
 
 
 #
+# configure headers
+#
+configure_file (config.h.in config.h)
+
+
+#
 # build ckrbl
 #
 add_executable(ckrbl
 	ckrbl.c
 	lookup.c
+	lookup_file.c
 	lookup_string.c
 	usage.c
 	terminfo.c
@@ -34,6 +41,7 @@ add_executable(ckrbl
 
 target_include_directories(ckrbl PUBLIC
 	../librbl
+	${CMAKE_CURRENT_BINARY_DIR}
 )
 
 target_link_libraries(ckrbl

@@ -29,6 +29,7 @@
 
 #include <rbl.h>
 
+#include "config.h"
 #include "terminfo.h"
 
 
@@ -44,11 +45,14 @@ main(int argc, char **argv)
 	 */
 	verbose_level = ALL;
 	char *blacklists = NULL;
+	const char *blacklist_file = NULL;
 	int opt;
 
-	while ((opt = getopt(argc, argv, "b:hlq")) != -1) {
+	while ((opt = getopt(argc, argv, "b:B:hlq")) != -1) {
 		switch (opt) {
 			case 'b': blacklists = optarg; break;
+
+			case 'B': blacklist_file = optarg;
 
 			case 'l': verbose_level = LISTED; break;
 
@@ -86,9 +90,10 @@ main(int argc, char **argv)
 		ret = lookup_string(ip, blacklists);
 
 	else {
-		fprintf(stderr, "No blacklists to search set\n\n");
-		print_usage(stderr);
-		exit(EXIT_FAILURE);
+		if (blacklist_file == NULL)
+			blacklist_file = DEFAULT_BLACKLIST_FILE;
+
+		ret = lookup_file(ip, blacklist_file);
 	}
 
 

@@ -1,0 +1,28 @@
+# @CMAKE_INSTALL_PREFIX@/etc/rbl.conf
+#
+# This file contains all realtime blacklist domains, that should be checked by
+# ckrbl. Each line contains a single domain. Lines starting with a # or blank
+# lines will be ignored.
+
+
+# The Spamhaus Block List ("SBL") Advisory is a database of IP addresses from
+# which Spamhaus does not recommend the acceptance of electronic mail.
+sbl.spamhaus.org
+
+# The Spamhaus Exploits Block List (XBL) is a realtime database of IP addresses
+# of hijacked PCs infected by illegal 3rd party exploits, including open proxies
+# (HTTP, socks, AnalogX, wingate, etc), worms/viruses with built-in spam
+# engines, and other types of trojan-horse exploits.
+xbl.spamhaus.org
+
+# The Spamhaus PBL is a DNSBL database of end-user IP address ranges which
+# should not be delivering unauthenticated SMTP email to any Internet mail
+# server except those provided for specifically by an ISP for that customer's
+# use. The PBL helps networks enforce their Acceptable Use Policy for dynamic
+# and non-MTA customer IP ranges.
+pbl.spamhaus.org
+
+# ZEN is the combination of all Spamhaus IP-based DNSBLs into one single
+# powerful and comprehensive blocklist to make querying faster and simpler. It
+# contains the SBL, SBLCSS, XBL and PBL blocklists.
+zen.spamhaus.org
