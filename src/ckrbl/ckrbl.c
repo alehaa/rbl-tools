@@ -26,48 +26,42 @@
 #include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include <rbl.h>
+
+#include "terminfo.h"
 
 
 int
 main(int argc, char **argv)
 {
-	/*
-	 * general config
+	/* get terminal information
 	 */
-	verbose_level_t verbose_level = ALL;
+	get_term_width();
+
+
+	/* get comand line options
+	 */
+	verbose_level = ALL;
 	char *blacklists = NULL;
-
-
-	/*
-	 * get comand line options
-	 */
 	int opt;
-	while ((opt = getopt(argc, argv, "b:fhq")) != -1) {
+
+	while ((opt = getopt(argc, argv, "b:hlq")) != -1) {
 		switch (opt) {
 			case 'b': blacklists = optarg; break;
 
-			case 'f': verbose_level = LISTED; break;
+			case 'l': verbose_level = LISTED; break;
 
 			case 'q': verbose_level = QUIET; break;
 
-			case 'h':
+			case 'h': print_usage(stdout); exit(EXIT_SUCCESS);
+
 			default: print_usage(stderr); exit(EXIT_FAILURE);
 		}
 	}
 
-	// was any blacklist set?
-	if (blacklists == NULL) {
-		fprintf(stderr, "No blacklists to search set\n\n");
-		print_usage(stderr);
-		exit(EXIT_FAILURE);
-	}
 
-
-	/*
-	 * convert IP into reverse format
+	/* convert IP into reverse format
 	 */
 	if (optind >= argc) {
 		fprintf(stderr, "Expected IP after options\n\n");
@@ -76,44 +70,36 @@ main(int argc, char **argv)
 	}
 
 	char ip[64];
+
 	if (rbl_atoip(argv[optind], ip) != 0) {
 		fprintf(stderr, "IP is invalid\n");
 		exit(EXIT_FAILURE);
 	}
 
 
-	/*
-	 * lookup IP in blacklists
+	/* check IP against blacklists
 	 */
 	int ret = 0;
-	char delimiter[] = ",; \n";
 
-	for (char *blacklist = strtok(blacklists, delimiter); blacklist != NULL;
-	     blacklist = strtok(NULL, delimiter)) {
-		switch (rbl_lookup(ip, blacklist, NULL)) {
-			case 1:
-				if (verbose_level != QUIET)
-					printf("%30s: blocked\n", blacklist);
+	// check manual set blacklists
+	if (blacklists != NULL)
+		ret = lookup_string(ip, blacklists);
 
-				// set exit code
-				ret = 255;
-
-				break;
-
-			case 0:
-				if (verbose_level == ALL)
-					printf("%30s: not blocked\n", blacklist);
-
-				break;
-
-			default:
-				if (verbose_level != QUIET)
-					printf("%30s: an error occued\n", blacklist);
-
-				ret = EXIT_FAILURE;
-		}
+	else {
+		fprintf(stderr, "No blacklists to search set\n\n");
+		print_usage(stderr);
+		exit(EXIT_FAILURE);
 	}
 
 
-	return ret;
+	/* set exit code
+	 */
+	switch (ret) {
+		case 0: return 0;
+
+		case 1: return 255;
+
+		case -1:
+		default: return 1;
+	}
 }

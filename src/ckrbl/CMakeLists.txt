@@ -26,7 +26,10 @@
 #
 add_executable(ckrbl
 	ckrbl.c
+	lookup.c
+	lookup_string.c
 	usage.c
+	terminfo.c
 )
 
 target_include_directories(ckrbl PUBLIC

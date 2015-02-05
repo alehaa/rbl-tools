@@ -19,30 +19,20 @@
  */
 
 
-#ifndef CKRBL_H
-#define CKRBL_H
+#ifndef CKRBL_TERMINFO_H
+#define CKRBL_TERMINFO_H
 
 
-/* include headers
+/*
+ * global  variables
  */
-#include <stdio.h>
+int terminal_width;
 
 
-/* enums
+/*
+ * function declarations
  */
-typedef enum { ALL, LISTED, QUIET } verbose_level_t;
+void get_term_width();
 
 
-/* global variables
- */
-verbose_level_t verbose_level;
-
-
-/* function declarations
- */
-void print_usage(FILE *stream);
-int lookup(const char *ip, const char *rbl_domain);
-int lookup_string(const char *ip, char *blacklists);
-
-
-#endif // CKRBL_H
+#endif // CKRBL_TERMINFO_H

@@ -67,6 +67,7 @@ rbl_atoip(const char *src, char *dest)
 
 	// check if IP is valid
 	struct addrinfo *res = NULL;
+
 	if (getaddrinfo(src, NULL, &hint, &res))
 		// address was invalid
 		return -1;
@@ -74,6 +75,7 @@ rbl_atoip(const char *src, char *dest)
 
 	// is src an IPv4 or IPv6 address?
 	int ret = 0;
+
 	switch (res->ai_family) {
 		case AF_INET: {
 			// cast address
@@ -99,6 +101,7 @@ rbl_atoip(const char *src, char *dest)
 			for (ssize_t i = 15; i >= 0; i--) {
 				// set writing schema
 				char *schema = "%x.%x.";
+
 				if (i == 0)
 					schema = "%x.%x";
 

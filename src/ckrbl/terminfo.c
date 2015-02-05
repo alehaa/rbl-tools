@@ -19,30 +19,32 @@
  */
 
 
-#ifndef CKRBL_H
-#define CKRBL_H
-
-
-/* include headers
+/* include header files
  */
-#include <stdio.h>
+#include "terminfo.h"
+
+#include <sys/ioctl.h>
 
 
-/* enums
+/** \brief Determine the width of the terminal
+ *
+ * \details Determines the width of the terminal via ioctl. The result will be
+ *  saved in the global variable \ref terminal_width. This function should be
+ *  called once at the beginning of \ref main.
+ *
+ *
+ * \return On success zero is returned. On error, -1 is returned, and errno is
+ *  set appropriately.
  */
-typedef enum { ALL, LISTED, QUIET } verbose_level_t;
+void
+get_term_width()
+{
+	struct winsize w;
 
+	// get terminal width
+	if (ioctl(0, TIOCGWINSZ, &w) != 0)
+		terminal_width = 80;
 
-/* global variables
- */
-verbose_level_t verbose_level;
-
-
-/* function declarations
- */
-void print_usage(FILE *stream);
-int lookup(const char *ip, const char *rbl_domain);
-int lookup_string(const char *ip, char *blacklists);
-
-
-#endif // CKRBL_H
+	// save terminal size in global variable
+	terminal_width = w.ws_col;
+}

@@ -21,53 +21,59 @@
 
 /* include headers
  */
-#include "rbl.h"
+#include "ckrbl.h"
 
-#include <assert.h>
-#include <netdb.h>
-#include <stdio.h>
-#include <string.h>
+#include <rbl.h>
+
+#include "terminfo.h"
 
 
-/** \brief Lookup \p ip in \p rbl_domain and return the result.
+/* color definitions
+ */
+#define ANSI_COLOR_RED "\x1b[31m"
+#define ANSI_COLOR_YELLOW "\x1b[33m"
+#define ANSI_COLOR_GREEN "\x1b[32m"
+#define ANSI_COLOR_RESET "\x1b[0m"
+
+
+/** \brief Lookup \p IP in \p rbl_domain and print out the result.
  *
- * \details This function does a DNSBL-lookup for \p ip in \p rbl_domain. If
- *  \p desc is not NULL, the TXT record will be looked up and stored in the
- *  buffer if it is avivable. This is only usefull for software that is used
- *  interacive.
  *
  * \param ip Reverse dotted IP (v4 or v6)
  * \param rbl_domain The RBL domain to be used
- * \param desc Buffer to store additional information about RBL entry
  *
  * \return Returns positive value, if \p ip is listed in \p rbl_domain or zero
  *  if it is not listed. On error a negative value will be returned.
  */
 int
-rbl_lookup(const char *ip, const char *rbl_domain, char *desc)
+lookup(const char *ip, const char *rbl_domain)
 {
-	// check, if ip or rbl_domain are NULL (must not be NULL)
-	assert(ip);
-	assert(rbl_domain);
+	// do the rbl lookup
+	int ret = rbl_lookup(ip, rbl_domain, NULL);
 
+	// evaluate rbl lookup
+	char *color = ANSI_COLOR_RED;
+	char *status = "LISTED";
 
-	// construct rbl lookup domain
-	char rbl_lookup_domain[strlen(ip) + strlen(rbl_domain) + 2];
-	sprintf(rbl_lookup_domain, "%s.%s", ip, rbl_domain);
+	switch (ret) {
+		case 0:
+			color = ANSI_COLOR_GREEN;
+			status = "  OK  ";
+			break;
 
+		case 1: break;
 
-	// lookup rbl
-	struct hostent *he = gethostbyname(rbl_lookup_domain);
+		case -1:
+		default:
+			color = ANSI_COLOR_YELLOW;
+			status = "UNKNOW";
+			break;
+	}
 
-	if (he != NULL)
-		// ip is on blacklist
-		return 1;
+	// print lookup result
+	printf("%-*s [%s%s%s] \n", terminal_width - 10, rbl_domain, color, status,
+	       ANSI_COLOR_RESET);
 
-	else if (h_errno == HOST_NOT_FOUND)
-		// ip is not on blacklist
-		return 0;
-
-	else
-		// an error occured
-		return -1;
+	// return result
+	return ret;
 }
