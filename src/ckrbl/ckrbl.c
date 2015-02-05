@@ -45,7 +45,7 @@ main(int argc, char **argv)
 	 * get comand line options
 	 */
 	int opt;
-	while ((opt = getopt(argc, argv, "b:fq")) != -1) {
+	while ((opt = getopt(argc, argv, "b:fhq")) != -1) {
 		switch (opt) {
 			case 'b': blacklists = optarg; break;
 
@@ -53,14 +53,15 @@ main(int argc, char **argv)
 
 			case 'q': verbose_level = QUIET; break;
 
-			default: print_usage(); exit(EXIT_FAILURE);
+			case 'h':
+			default: print_usage(stderr); exit(EXIT_FAILURE);
 		}
 	}
 
 	// was any blacklist set?
 	if (blacklists == NULL) {
 		fprintf(stderr, "No blacklists to search set\n\n");
-		print_usage();
+		print_usage(stderr);
 		exit(EXIT_FAILURE);
 	}
 
@@ -70,7 +71,7 @@ main(int argc, char **argv)
 	 */
 	if (optind >= argc) {
 		fprintf(stderr, "Expected IP after options\n\n");
-		print_usage();
+		print_usage(stderr);
 		exit(EXIT_FAILURE);
 	}
 

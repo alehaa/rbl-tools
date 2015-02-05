@@ -23,6 +23,11 @@
 #define CKRBL_H
 
 
+/* include headers
+ */
+#include <stdio.h>
+
+
 /*
  * enums
  */
@@ -32,7 +37,7 @@ typedef enum { ALL, LISTED, QUIET } verbose_level_t;
 /*
  * function declarations
  */
-void print_usage();
+void print_usage(FILE *stream);
 
 
 #endif // CKRBL_H

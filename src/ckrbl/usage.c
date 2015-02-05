@@ -21,7 +21,7 @@
 
 /* include headers
  */
-#include <stdio.h>
+#include "ckrbl.h"
 
 
 /** \brief Print usage for this application.
@@ -30,6 +30,12 @@
  * \return This function returns no value.
  */
 void
-print_usage()
+print_usage(FILE *stream)
 {
+	fprintf(stream, "Usage: ckrbl [options] IP\n\n");
+	fprintf(stream, "Avivable options:\n");
+	fprintf(stream, "  -b\tBlacklists that IP should be checked against.\n\n");
+	fprintf(stream, "  -f\tPrint only blacklists, where IP is matched.\n\n");
+	fprintf(stream, "  -h\tPrint this help\n\n");
+	fprintf(stream, "  -q\tPrint nothing.\n\n");
 }
