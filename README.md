@@ -60,7 +60,8 @@ a.nother.provider.com
 
 - blacklist entrys inside a provider block are separated by a single blank line
 - add a small description in front of each blacklist entry
-- the must not be more than 80 characters per line
+- there must not be more than 80 characters per line
+- add only blacklists, that don't need a license for private / small usage
 
 
 ## License
