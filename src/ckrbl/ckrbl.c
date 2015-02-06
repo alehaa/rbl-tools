@@ -94,6 +94,8 @@ main(int argc, char **argv)
 			blacklist_file = DEFAULT_BLACKLIST_FILE;
 
 		ret = lookup_file(ip, blacklist_file);
+		if (ret < 0)
+			fprintf(stderr, "Unable to read file: '%s'\n", blacklist_file);
 	}
 
 
