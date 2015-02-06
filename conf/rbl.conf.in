@@ -5,6 +5,13 @@
 # lines will be ignored.
 
 
+# Blacklist listing IPs sent spam to their servers or spam traps. When spam is
+# sent from multiple IPs within a class C range to our servers or spam traps the
+# entire class C range will be listed. The 0spam project does not list anything
+# larger than a class C range.
+0spam.fusionzero.com
+
+
 # The Spamhaus Block List ("SBL") Advisory is a database of IP addresses from
 # which Spamhaus does not recommend the acceptance of electronic mail.
 sbl.spamhaus.org
