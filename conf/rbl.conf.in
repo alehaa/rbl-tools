@@ -12,6 +12,36 @@
 0spam.fusionzero.com
 
 
+# Blocklist.de blacklist for Apache, RFI, w00tw00t, SQL-Injection, Forum-Spam
+# and http://honeystats.info/.
+apache.bl.blocklist.de
+
+# Blocklist.de blacklist for all IPs, which attack Joomla, Wordpress and other
+# Web-Logins with Brute-Force.
+bruteforcelogin.bl.blocklist.de
+
+# Blocklist.de blacklist for FTP Brute-Force-Attacks.
+ftp.bl.blocklist.de
+
+# Blocklist.de blacklist for imap, pop3, sasl, webmail-Logins, etc.
+imap.bl.blocklist.de
+
+# Blocklist.de blacklist for mail/postfix, 5xx-Errors (Blacklist-Entrys) and
+# Relaying.
+mail.bl.blocklist.de
+
+# Blocklist.de blacklist for IPs running SSH attacks.
+ssh.bl.blocklist.de
+
+# Blocklist.de blacklist for IPs who try Sip/Asterisk Brute-Force-Login-attacks.
+sip.bl.blocklist.de
+
+# Blocklist.de blacklist for IPs listed on any of the regular Blocklist.de
+# blacklists.
+bl.blocklist.de
+all.bl.blocklist.de
+
+
 # The Spamhaus Block List ("SBL") Advisory is a database of IP addresses from
 # which Spamhaus does not recommend the acceptance of electronic mail.
 sbl.spamhaus.org
