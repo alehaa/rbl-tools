@@ -10,7 +10,7 @@ With ckrbl you can check any IP on the terminal via
 ckrbl [options] IP
 ```
 
-ckRBL is shipped with a default set of realtime blacklists and all can be checked with only one command.
+ckRBL is shipped with a default set of realtime blacklists and all can be checked with only one command. *Please note, that for many blacklists you'll need an enterprise license for commercial use. All listed blacklists are free for private use. Contact the blacklist provider for more information!*
 
 You are able to integrate ckrbl in your applications, due ckrbl sets an exit-status of zero if the IP was not blacklisted on any blacklist or 255, if it was blacklisted on one ore more blacklists. So you are able to check your servers IP with e.g. nagios regular.
 
