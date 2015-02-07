@@ -20,8 +20,5 @@
 #   2015 Alexander Haase <alexander.haase@rwth-aachen.de>
 #
 
-# configure rbl.conf
-configure_file(rbl.conf.in "${CMAKE_CURRENT_BINARY_DIR}/rbl.conf")
-
 # install rbl.conf
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/rbl.conf" DESTINATION etc)
+install(FILES rbl.conf DESTINATION etc)
