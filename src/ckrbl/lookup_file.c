@@ -64,7 +64,8 @@ lookup_file(const char *ip, const char *blacklist_file)
 			continue;
 
 		// replace comments, spaces and newlines after blacklist domain
-		for (char *q = p; *p + 1; q++) {
+		char *q;
+		for (q = p; *p + 1; q++) {
 			if (*q == ' ' || *q == '#' || *q == '\n' || *q == '\t') {
 				*q = '\0';
 				break;

@@ -98,7 +98,8 @@ rbl_atoip(const char *src, char *dest)
 			// copy IP reverse into dest
 			char *p = dest;
 
-			for (ssize_t i = 15; i >= 0; i--) {
+			ssize_t i;
+			for (i = 15; i >= 0; i--) {
 				// set writing schema
 				char *schema = "%x.%x.";
 
