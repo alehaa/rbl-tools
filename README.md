@@ -1,7 +1,9 @@
 # RBL-tools
+
+[![Build Status](https://travis-ci.org/alehaa/rbl-tools.svg)](https://travis-ci.org/alehaa/rbl-tools)
+
 *Library and toolset for checking realtime blackhole lists*
 
-------
 
 ## ckRBL
 
