@@ -28,7 +28,14 @@ cmake_minimum_required(VERSION 2.8.11)
 #
 # project information
 #
-project("rbl-tools")
+project("rbl-tools" LANGUAGES C)
+
+
+# choose new behaviour for CMP0042
+# see http://www.cmake.org/cmake/help/v3.0/policy/CMP0042.html for more details
+if (POLICY CMP0042)
+	cmake_policy(SET CMP0042 NEW)
+endif (POLICY CMP0042)
 
 
 #
