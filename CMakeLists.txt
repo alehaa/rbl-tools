@@ -28,7 +28,11 @@ cmake_minimum_required(VERSION 2.8.11)
 #
 # project information
 #
-project("rbl-tools" LANGUAGES C)
+if (${CMAKE_MAJOR_VERSION} EQUAL 3)
+	project("rbl-tools" LANGUAGES C)
+else ()
+	project("rbl-tools" C)
+endif ()
 
 
 # choose new behaviour for CMP0042
