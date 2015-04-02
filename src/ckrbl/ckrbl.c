@@ -52,7 +52,7 @@ main(int argc, char **argv)
 		switch (opt) {
 			case 'b': blacklists = optarg; break;
 
-			case 'B': blacklist_file = optarg;
+			case 'B': blacklist_file = optarg; break;
 
 			case 'l': verbose_level = LISTED; break;
 

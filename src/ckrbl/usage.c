@@ -39,7 +39,7 @@ print_usage(FILE *stream)
 	fprintf(stream, "  -B\tFile containing blacklists IP should be checked "
 	                "against.\n\tDefault: %s\n",
 	        DEFAULT_BLACKLIST_FILE);
-	fprintf(stream, "  -f\tPrint only blacklists, where IP is matched.\n\n");
 	fprintf(stream, "  -h\tPrint this help\n\n");
+	fprintf(stream, "  -l\tPrint only blacklists, where IP is matched.\n\n");
 	fprintf(stream, "  -q\tPrint nothing.\n\n");
 }
