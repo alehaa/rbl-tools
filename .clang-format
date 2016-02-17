@@ -1,0 +1,69 @@
+# This file is part of rbl-tools.
+#
+# rbl-tools is free software: you can redistribute it and/or modify it under the
+# terms of the GNU Lesser General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option) any
+# later version.
+#
+# This program is distributed in the hope that it will be useful,but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program. If not, see <http://www.gnu.org/licenses/>.
+#
+#
+# Copyright (C)
+#  2015-2016 Alexander Haase <alexander.haase@rwth-aachen.de>
+#
+
+# This is the clang-format configuration for rbl-tools.
+#
+# Clang-format should help to beautify the code, so that every developer can
+# write code, while the beautifier will take care about the style guides.
+# clang-format should be run at least before each commit to ensure a consistent
+# code style in the git, to avoid reformating commits.
+
+# Basicaly we use LLVM style, but have some changes listet in this
+# configuration.
+BasedOnStyle: LLVM
+
+# A maximum of two blank lines are allowed.
+MaxEmptyLinesToKeep: 2
+
+---
+Language: Cpp
+
+# Align escaped newlines as far left as possible.
+AlignEscapedNewlinesLeft: true
+
+# The first parameter of a function declaration must be in the first line, the
+# other parameters may be in the following lines but will be aligned horizontal.
+AllowAllParametersOfDeclarationOnNextLine: false
+
+# Short case labels will be contracted to a single line
+AllowShortCaseLabelsOnASingleLine: true
+
+# Do not merge empty functions
+AllowShortFunctionsOnASingleLine: None
+
+# Always break after the return type.
+AlwaysBreakAfterDefinitionReturnType: All
+
+# Always attach braces to surrounding context, but break before braces on enum,
+# function, and record definitions.
+BreakBeforeBraces: Mozilla
+
+# Indent case labels one level from the switch statement.
+IndentCaseLabels: true
+
+# Empty lines at the start of blocks will not be kept.
+KeepEmptyLinesAtTheStartOfBlocks: false
+
+# Indent with a tab, which is 4 spaces width.
+IndentWidth: 4
+TabWidth: 4
+UseTab: ForIndentation
+
+...
