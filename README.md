@@ -1,6 +1,7 @@
 # RBL-tools
 
-[![Build Status](https://travis-ci.org/alehaa/rbl-tools.svg)](https://travis-ci.org/alehaa/rbl-tools)
+[![Travis](https://img.shields.io/travis/alehaa/rbl-tools.svg?style=flat-square)](https://travis-ci.org/alehaa/rbl-tools) [![](https://img.shields.io/github/issues-raw/alehaa/rbl-tools.svg?style=flat-square)](https://github.com/alehaa/rbl-tools/issues)
+[![GPL and LGPL license](http://img.shields.io/badge/license-GPL_and_LGPL-blue.svg?style=flat-square)](http://www.gnu.org/licenses/)
 
 *Library and toolset for checking realtime blackhole lists*
 
@@ -68,7 +69,9 @@ a.nother.provider.com
 
 ## License
 
-rbl-tools is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+__rbl-tools__ is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+__librbl__ is free software: you can redistribute it and/or modify it under the terms of the GNU __Lesser__ General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful, but **without any warranty**; without even the implied warranty of **merchantability** or **fitness for a particular purpose**. See the GNU General Public License for more details.
 
