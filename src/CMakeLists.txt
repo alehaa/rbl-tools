@@ -26,3 +26,4 @@
 #
 add_subdirectory(librbl)
 add_subdirectory(ckrbl)
+add_subdirectory(concierge)
