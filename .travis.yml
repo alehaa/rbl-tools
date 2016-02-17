@@ -2,8 +2,14 @@ language: c
 compiler:
   - gcc
   - clang
-before_install:
-  - echo "yes" | sudo add-apt-repository ppa:kalakris/cmake
-  - sudo apt-get update -qq
-  - sudo apt-get install cmake
-script: mkdir build && cd build && cmake ../ && make
+
+addons:
+  apt:
+    sources:
+      - kalakris-cmake
+    packages:
+      - cmake
+
+script:
+  - mkdir travis && cd travis
+  - cmake .. -DCMAKE_INSTALL_PREFIX=../travis-install && make install
