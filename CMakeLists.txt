@@ -42,8 +42,14 @@ if (POLICY CMP0042)
 endif (POLICY CMP0042)
 
 
-#
+# set CMake module path
+set(CMAKE_MODULE_PATH
+	"${CMAKE_SOURCE_DIR}/cmake"
+	${CMAKE_MODULE_PATH}
+)
+
+
 # recurse into subdirectories
-#
 add_subdirectory(conf)
+add_subdirectory(doc)
 add_subdirectory(src)
