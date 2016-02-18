@@ -24,10 +24,12 @@
 
 #include "config.h"
 
+
 int
 main(int argc, char **argv)
 {
-	concierge_parse_config(argc, argv);
+	struct concierge_config config;
+	concierge_parse_config(argc, argv, &config);
 
 	return EXIT_SUCCESS;
 }

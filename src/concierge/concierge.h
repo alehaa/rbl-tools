@@ -22,18 +22,4 @@
 #define CONCIERGE_H
 
 
-#include <stdint.h>
-
-
-// verbose level as global variable
-enum verbose_level
-{
-	VERBOSE_LEVEL_NOTICE = 1,
-	VERBOSE_LEVEL_INFO = 2,
-	VERBOSE_LEVEL_DEBUG = 4
-};
-
-enum verbose_level conf_verbose;
-
-
 #endif

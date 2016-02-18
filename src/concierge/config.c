@@ -20,6 +20,8 @@
 
 #include "config.h"
 
+#include <stdlib.h> // atoi
+
 #include <argp.h>
 
 
@@ -30,11 +32,46 @@ const char *argp_program_bug_address =
 static char doc[] = "concierge -- realtime blacklist nfqueues handler";
 
 
-static struct argp argp = {NULL, NULL, NULL, doc};
+static struct argp_option options[] = {
+    {"verbose", 'v', 0, 0,
+     "Produce verbose output. Use multiple times to increase verbosity."},
+    {"blacklist", 'b', "domain", 0,
+     "DNS blacklist domain to check IPs against."},
+    {"queue-num", 'q', "num", 0, "NFQUEUE to use."},
+    {0}};
 
+
+static error_t
+parse_opt(int key, char *arg, struct argp_state *state)
+{
+	/* Get the input argument from argp_parse, which we know is a pointer to our
+	 * arguments structure. */
+	struct concierge_config *config = state->input;
+
+	switch (key) {
+		case 'v':
+			config->verbose_level = (config->verbose_level << 1) + 1;
+			break;
+
+		case 'b': config->blacklist_domain = arg; break;
+		case 'q': config->nfqueue_num = atoi(arg); break;
+
+		default: return ARGP_ERR_UNKNOWN;
+	}
+
+	return 0;
+}
+
+
+static struct argp argp = {options, parse_opt, NULL, doc};
 
 void
-concierge_parse_config(int argc, char **argv)
+concierge_parse_config(int argc, char **argv, struct concierge_config *config)
 {
-	argp_parse(&argp, argc, argv, 0, 0, 0);
+	// Default values.
+	config->verbose_level = 0;
+	config->blacklist_domain = NULL;
+	config->nfqueue_num = 0;
+
+	argp_parse(&argp, argc, argv, 0, 0, config);
 }

@@ -23,9 +23,27 @@
 
 
 #include <stdbool.h>
+#include <stdint.h>
 
 
-void concierge_parse_config(int argc, char **argv);
+enum verbose_level
+{
+	VERBOSE_LEVEL_NOTICE = 1,
+	VERBOSE_LEVEL_INFO = 2,
+	VERBOSE_LEVEL_DEBUG = 4
+};
+
+
+struct concierge_config
+{
+	enum verbose_level verbose_level;
+	const char *blacklist_domain;
+	uint16_t nfqueue_num;
+};
+
+
+void concierge_parse_config(int argc, char **argv,
+                            struct concierge_config *config);
 
 
 #endif
