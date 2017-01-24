@@ -9,11 +9,11 @@ matrix:
 
     - os: linux
       dist: trusty
-      sudo: required
+      sudo: false
       compiler: gcc
     - os: linux
       dist: trusty
-      sudo: required
+      sudo: false
       compiler: clang
 
 addons:
