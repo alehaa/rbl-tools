@@ -38,7 +38,7 @@
  *  if it is not listed. On error a negative value will be returned.
  */
 int
-lookup_string(const char *ip, char *blacklists)
+lookup_string(rbl_revip *ip, char *blacklists)
 {
 	int ret = 0;
 

@@ -28,6 +28,8 @@
  */
 #include <stdio.h>
 
+#include <rbl.h>
+
 
 /* enums
  */
@@ -42,9 +44,9 @@ verbose_level_t verbose_level;
 /* function declarations
  */
 void print_usage(FILE *stream);
-int lookup(const char *ip, const char *rbl_domain);
-int lookup_string(const char *ip, char *blacklists);
-int lookup_file(const char *ip, const char *blacklist_file);
+int lookup(rbl_revip *ip, const char *rbl_domain);
+int lookup_string(rbl_revip *ip, char *blacklists);
+int lookup_file(rbl_revip *ip, const char *blacklist_file);
 
 
 #endif // CKRBL_H

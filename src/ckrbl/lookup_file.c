@@ -37,7 +37,7 @@
  *  if it is not listed. On error a negative value will be returned.
  */
 int
-lookup_file(const char *ip, const char *blacklist_file)
+lookup_file(rbl_revip *ip, const char *blacklist_file)
 {
 	int ret = 0;
 

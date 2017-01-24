@@ -35,12 +35,11 @@
  *
  * \param addr The IP to be converted.
  * \param [out] dest Pointer where to store the reverse noted IP.
- * \param num Length of \p dest.
  *
  * \return On success zero will be returned, otherwise -1.
  */
 static int
-rbl_convert_ipv4(const in_addr_t *addr, char *dest, const size_t num)
+rbl_convert_ipv4(const in_addr_t *addr, rbl_revip *dest)
 {
 	/* This solution was found at stack overflow and is licensed under the MIT
 	 * license. The solution can be found at:
@@ -51,7 +50,10 @@ rbl_convert_ipv4(const in_addr_t *addr, char *dest, const size_t num)
 	    ((*addr & 0xff000000) >> 24) | ((*addr & 0x00ff0000) >> 8) |
 	    ((*addr & 0x0000ff00) << 8) | ((*addr & 0x000000ff) << 24);
 
-	return (inet_ntop(AF_INET, &reverse, dest, num) != NULL) ? 0 : -1;
+	return (inet_ntop(AF_INET, &reverse, dest->r_ip, sizeof(dest->r_ip)) !=
+	        NULL)
+	           ? 0
+	           : -1;
 }
 
 
@@ -64,19 +66,19 @@ rbl_convert_ipv4(const in_addr_t *addr, char *dest, const size_t num)
  *
  * \param sa AF_INET6 socket address struct containing the IPv6 to convert.
  * \param [out] dest Pointer where to store the reverse noted IP.
- * \param num Length of \p dest.
  *
  * \return On success zero will be returned. An error code of -1 indicates that
  *  the memory of \p dest is not sufficient.
  */
 static int
-rbl_convert_ipv6(struct sockaddr_in6 *sa, char *dest, size_t num)
+rbl_convert_ipv6(struct sockaddr_in6 *sa, rbl_revip *dest)
 {
 	/* This loop will concatenate all IPv6 octets in hexadecimal notation in
 	 * reverse order. */
-	int i;
-	for (i = 15; i >= 0; i--, dest += 4, num -= 4)
-		if (snprintf(dest, num, "%x.%x%s",
+	int i, num;
+	char *p = dest->r_ip;
+	for (i = 15, num = sizeof(dest->r_ip); i >= 0; i--, p += 4, num -= 4)
+		if (snprintf(p, num, "%x.%x%s",
 		             (unsigned char)((sa->sin6_addr.s6_addr[i]) & 0xf),
 		             (unsigned char)((sa->sin6_addr.s6_addr[i] >> 4)),
 		             (i != 0) ? "." : "") > num)
@@ -97,13 +99,12 @@ rbl_convert_ipv6(struct sockaddr_in6 *sa, char *dest, size_t num)
  *
  * \param src String containing IP to be examined
  * \param [out] dest Pointer where to store the reverse noted IP.
- * \param num Length of \p dest.
  *
  * \return On success zero will be returned. On any error a non-zero value will
  *  be returned and errno set appropriately.
  */
 int
-rbl_atoip(const char *src, char *dest, const size_t num)
+rbl_atoip(const char *src, rbl_revip *dest)
 {
 	/* Check the required parameters for valid values. src and dest are both
 	 * mandatory and MUST NOT be null. */
@@ -116,11 +117,11 @@ rbl_atoip(const char *src, char *dest, const size_t num)
 	 * will then convert the IPs to the reverse notation. */
 	in_addr_t addr;
 	if (inet_pton(AF_INET, src, &addr) == 1)
-		return rbl_convert_ipv4(&addr, dest, num);
+		return rbl_convert_ipv4(&addr, dest);
 
 	struct sockaddr_in6 sa6;
 	if (inet_pton(AF_INET6, src, &(sa6.sin6_addr)) == 1)
-		return rbl_convert_ipv6(&sa6, dest, num);
+		return rbl_convert_ipv6(&sa6, dest);
 
 
 	/* The IP has no known IP format and can't be converted. */

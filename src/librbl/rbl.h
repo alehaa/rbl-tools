@@ -26,8 +26,16 @@
 #include <stddef.h>
 
 
-int rbl_lookup(const char *ip, const char *rbl_domain, char *desc);
-int rbl_atoip(const char *src, char *dest, const size_t num);
+/** \brief Datatyype for storing the reverse formatted IP.
+ */
+typedef struct rbl_revip
+{
+	char r_ip[64]; ///< The IP in reverse notation.
+} rbl_revip;
+
+
+int rbl_lookup(rbl_revip *ip, const char *rbl_domain, char *desc);
+int rbl_atoip(const char *src, rbl_revip *dest);
 
 
 #endif

@@ -47,7 +47,7 @@
  *  if it is not listed. On error a negative value will be returned.
  */
 int
-lookup(const char *ip, const char *rbl_domain)
+lookup(rbl_revip *ip, const char *rbl_domain)
 {
 	// do the rbl lookup
 	int ret = rbl_lookup(ip, rbl_domain, NULL);

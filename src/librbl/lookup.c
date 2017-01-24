@@ -45,7 +45,7 @@
  *  if it is not listed. On error a negative value will be returned.
  */
 int
-rbl_lookup(const char *ip, const char *rbl_domain, char *desc)
+rbl_lookup(rbl_revip *ip, const char *rbl_domain, char *desc)
 {
 	// check, if ip or rbl_domain are NULL (must not be NULL)
 	assert(ip);
@@ -53,8 +53,8 @@ rbl_lookup(const char *ip, const char *rbl_domain, char *desc)
 
 
 	// construct rbl lookup domain
-	char rbl_lookup_domain[strlen(ip) + strlen(rbl_domain) + 2];
-	sprintf(rbl_lookup_domain, "%s.%s", ip, rbl_domain);
+	char rbl_lookup_domain[strlen(ip->r_ip) + strlen(rbl_domain) + 2];
+	sprintf(rbl_lookup_domain, "%s.%s", ip->r_ip, rbl_domain);
 
 
 	// lookup rbl

@@ -74,9 +74,8 @@ main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 
-	char ip[64];
-
-	if (rbl_atoip(argv[optind], ip, 64) != 0) {
+	rbl_revip ip;
+	if (rbl_atoip(argv[optind], &ip) != 0) {
 		fprintf(stderr, "IP is invalid\n");
 		exit(EXIT_FAILURE);
 	}
@@ -88,13 +87,13 @@ main(int argc, char **argv)
 
 	// check manual set blacklists
 	if (blacklists != NULL)
-		ret = lookup_string(ip, blacklists);
+		ret = lookup_string(&ip, blacklists);
 
 	else {
 		if (blacklist_file == NULL)
 			blacklist_file = DEFAULT_BLACKLIST_FILE;
 
-		ret = lookup_file(ip, blacklist_file);
+		ret = lookup_file(&ip, blacklist_file);
 		if (ret < 0)
 			fprintf(stderr, "Unable to read file: '%s'\n", blacklist_file);
 	}
