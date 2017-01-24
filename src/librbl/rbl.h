@@ -19,16 +19,15 @@
  *  2015-2017 Alexander Haase <ahaase@mksec.de>
  */
 
-
 #ifndef LIBRBL_H
 #define LIBRBL_H
 
 
-/*
- * function declarations
- */
+#include <stddef.h>
+
+
 int rbl_lookup(const char *ip, const char *rbl_domain, char *desc);
-int rbl_atoip(const char *src, char *dest);
+int rbl_atoip(const char *src, char *dest, const size_t num);
 
 
-#endif // LIBRBL_H
+#endif

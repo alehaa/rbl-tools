@@ -76,7 +76,7 @@ main(int argc, char **argv)
 
 	char ip[64];
 
-	if (rbl_atoip(argv[optind], ip) != 0) {
+	if (rbl_atoip(argv[optind], ip, 64) != 0) {
 		fprintf(stderr, "IP is invalid\n");
 		exit(EXIT_FAILURE);
 	}

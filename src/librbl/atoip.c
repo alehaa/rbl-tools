@@ -19,23 +19,71 @@
  *  2015-2017 Alexander Haase <ahaase@mksec.de>
  */
 
-
-/* include headers
- */
 #include "rbl.h"
 
 #include <assert.h>
 #include <stdio.h>
 
-#include <sys/types.h>
-#include <stdio.h>
-#include <string.h>
-#include <sys/socket.h>
-#include <netdb.h>
-
-#include <sys/socket.h>
-#include <netinet/in.h>
 #include <arpa/inet.h>
+
+
+/** \brief Convert IPv4 \p addr into reverse notation.
+ *
+ * \details This function convertes the IP (v4) in \p addr from the A.B.C.D
+ *  format to the reverse notation format D.C.B.A.
+ *
+ *
+ * \param addr The IP to be converted.
+ * \param [out] dest Pointer where to store the reverse noted IP.
+ * \param num Length of \p dest.
+ *
+ * \return On success zero will be returned, otherwise -1.
+ */
+static int
+rbl_convert_ipv4(const in_addr_t *addr, char *dest, const size_t num)
+{
+	/* This solution was found at stack overflow and is licensed under the MIT
+	 * license. The solution can be found at:
+	 *
+	 *   http://stackoverflow.com/a/16373300
+	 */
+	in_addr_t reverse =
+	    ((*addr & 0xff000000) >> 24) | ((*addr & 0x00ff0000) >> 8) |
+	    ((*addr & 0x0000ff00) << 8) | ((*addr & 0x000000ff) << 24);
+
+	return (inet_ntop(AF_INET, &reverse, dest, num) != NULL) ? 0 : -1;
+}
+
+
+/** \brief Convert IPv6 in \p sa into reverse notation.
+ *
+ * \details This functions converts the IPv6 in \p sa from the ABCD:EFGH::
+ *  format to the reverse notation .H.G.F.E.D.C.B.A. Shortened IPv6 address
+ *  parts will be filled with zeros.
+ *
+ *
+ * \param sa AF_INET6 socket address struct containing the IPv6 to convert.
+ * \param [out] dest Pointer where to store the reverse noted IP.
+ * \param num Length of \p dest.
+ *
+ * \return On success zero will be returned. An error code of -1 indicates that
+ *  the memory of \p dest is not sufficient.
+ */
+static int
+rbl_convert_ipv6(struct sockaddr_in6 *sa, char *dest, size_t num)
+{
+	/* This loop will concatenate all IPv6 octets in hexadecimal notation in
+	 * reverse order. */
+	int i;
+	for (i = 15; i >= 0; i--, dest += 4, num -= 4)
+		if (snprintf(dest, num, "%x.%x%s",
+		             (unsigned char)((sa->sin6_addr.s6_addr[i]) & 0xf),
+		             (unsigned char)((sa->sin6_addr.s6_addr[i] >> 4)),
+		             (i != 0) ? "." : "") > num)
+			return -1;
+
+	return 0;
+}
 
 
 /** \brief Converts \p src to an reverse noted ip string stored in \p dest.
@@ -44,89 +92,37 @@
  *  it is valid, it will be reformated and stored in \p dest and can be used by
  *  \ref rbl_lookup.
  *
+ * \note \p dest should be 64 bytes long.
+ *
+ *
  * \param src String containing IP to be examined
- * \param dest Destination buffer for reformated IP
+ * \param [out] dest Pointer where to store the reverse noted IP.
+ * \param num Length of \p dest.
  *
  * \return On success zero will be returned. On any error a non-zero value will
  *  be returned and errno set appropriately.
- *
- * \note \p dest should be 64 bytes long.
  */
 int
-rbl_atoip(const char *src, char *dest)
+rbl_atoip(const char *src, char *dest, const size_t num)
 {
-	// check, src or dest are NULL (must not be NULL)
+	/* Check the required parameters for valid values. src and dest are both
+	 * mandatory and MUST NOT be null. */
 	assert(src);
 	assert(dest);
 
 
-	// prepare hint
-	struct addrinfo hint = {0};
-	hint.ai_family = PF_UNSPEC;
-	hint.ai_flags = AI_NUMERICHOST;
+	/* Try to convert src into a network address structure of either AF_INET or
+	 * AF_INET6 address family. The static functions rbl_convert_ipv4 and _ipv6
+	 * will then convert the IPs to the reverse notation. */
+	in_addr_t addr;
+	if (inet_pton(AF_INET, src, &addr) == 1)
+		return rbl_convert_ipv4(&addr, dest, num);
+
+	struct sockaddr_in6 sa6;
+	if (inet_pton(AF_INET6, src, &(sa6.sin6_addr)) == 1)
+		return rbl_convert_ipv6(&sa6, dest, num);
 
 
-	// check if IP is valid
-	struct addrinfo *res = NULL;
-
-	if (getaddrinfo(src, NULL, &hint, &res))
-		// address was invalid
-		return -1;
-
-
-	// is src an IPv4 or IPv6 address?
-	int ret = 0;
-
-	switch (res->ai_family) {
-		case AF_INET: {
-			// cast address
-			struct sockaddr_in *in = (struct sockaddr_in *)res->ai_addr;
-
-			// copy IP reverse into dest
-			sprintf(dest, "%u.%u.%u.%u",
-			        (unsigned int)((in->sin_addr.s_addr >> 24) & 0xff),
-			        (unsigned int)((in->sin_addr.s_addr >> 16) & 0xff),
-			        (unsigned int)((in->sin_addr.s_addr >> 8) & 0xff),
-			        (unsigned int)((in->sin_addr.s_addr) & 0xff));
-
-			break;
-		}
-
-		case AF_INET6: {
-			// cast address
-			struct sockaddr_in6 *in = (struct sockaddr_in6 *)res->ai_addr;
-
-			// copy IP reverse into dest
-			char *p = dest;
-
-			ssize_t i;
-			for (i = 15; i >= 0; i--) {
-				// set writing schema
-				char *schema = "%x.%x.";
-
-				if (i == 0)
-					schema = "%x.%x";
-
-				// copy octet reverse into dest
-				sprintf(p, schema,
-				        (unsigned int)((in->sin6_addr.s6_addr[i]) & 0xf),
-				        (unsigned int)((in->sin6_addr.s6_addr[i] >> 4)));
-
-				// shift writing pointer
-				if (i > 0)
-					p += 4;
-			}
-
-			break;
-		}
-
-		default:
-			// unknown address format
-			ret = -1;
-	}
-
-	// free address info
-	freeaddrinfo(res);
-
-	return ret;
+	/* The IP has no known IP format and can't be converted. */
+	return -1;
 }
