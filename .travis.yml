@@ -25,4 +25,4 @@ addons:
 
 script:
   - mkdir travis && cd travis
-  - cmake .. -DCMAKE_INSTALL_PREFIX=../travis-install && make install
+  - cmake .. -DCMAKE_INSTALL_PREFIX=../travis-install -DENABLE_TESTS=On && make && make test

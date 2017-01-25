@@ -46,3 +46,10 @@ endif (POLICY CMP0042)
 #
 add_subdirectory(conf)
 add_subdirectory(src)
+
+
+option(ENABLE_TESTS "Selects whether tests are built." false)
+if (ENABLE_TESTS)
+	enable_testing()
+	add_subdirectory(tests)
+endif ()
