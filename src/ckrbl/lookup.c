@@ -75,6 +75,11 @@ lookup(rbl_revip *ip, const char *rbl_domain)
 	if (verbose_level != QUIET && !(verbose_level == LISTED && ret == 0)) {
 		printf("%-*s [%s%s%s] \n", terminal_width - 10, rbl_domain, color,
 		       status, ANSI_COLOR_RESET);
+		if (ret == 1) {
+			char buffer[1024];
+			if (rbl_lookup_txt(ip, rbl_domain, buffer, 1024) == 1)
+				printf("  %s\n", buffer);
+		}
 	}
 
 	// return result
