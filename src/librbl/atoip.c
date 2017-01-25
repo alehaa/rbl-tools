@@ -30,7 +30,7 @@
 /** \brief Convert IPv4 \p addr into reverse notation.
  *
  * \details This function convertes the IP (v4) in \p addr from the A.B.C.D
- *  format to the reverse notation format D.C.B.A.
+ *  format to the reverse notation format D.C.B.A as described in RFC5782.
  *
  *
  * \param addr The IP to be converted.
@@ -60,8 +60,7 @@ rbl_convert_ipv4(const in_addr_t *addr, rbl_revip *dest)
 /** \brief Convert IPv6 in \p sa into reverse notation.
  *
  * \details This functions converts the IPv6 in \p sa from the ABCD:EFGH::
- *  format to the reverse notation .H.G.F.E.D.C.B.A. Shortened IPv6 address
- *  parts will be filled with zeros.
+ *  format to the reverse notation .H.G.F.E.D.C.B.A as described in RFC5782.
  *
  *
  * \param sa AF_INET6 socket address struct containing the IPv6 to convert.
@@ -90,11 +89,10 @@ rbl_convert_ipv6(struct sockaddr_in6 *sa, rbl_revip *dest)
 
 /** \brief Converts \p src to an reverse noted ip string stored in \p dest.
  *
- * \details \p src will be examined, if it is a valid IPv4 or IPv6 address. If
- *  it is valid, it will be reformated and stored in \p dest and can be used by
- *  \ref rbl_lookup.
- *
- * \note \p dest should be 64 bytes long.
+ * \details RFC5782 requires the IP to be transformed into a reverse notation
+ *  for lookup in the DNSBL domain like the transformation for rDNS. This
+ *  function exmaines \p src for a valid IP string and converts the IP address
+ *  to the required format so it can be used by \ref rbl_lookup.
  *
  *
  * \param src String containing IP to be examined
