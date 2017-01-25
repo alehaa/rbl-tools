@@ -41,6 +41,12 @@
 static int
 rbl_convert_ipv4(const in_addr_t *addr, rbl_revip *dest)
 {
+	/* Check the required parameters for valid values. addr and dest are both
+	 * mandatory and MUST NOT be null. */
+	assert(addr);
+	assert(dest);
+
+
 	/* This solution was found at stack overflow and is licensed under the MIT
 	 * license. The solution can be found at:
 	 *
@@ -70,8 +76,14 @@ rbl_convert_ipv4(const in_addr_t *addr, rbl_revip *dest)
  *  the memory of \p dest is not sufficient.
  */
 static int
-rbl_convert_ipv6(struct sockaddr_in6 *sa, rbl_revip *dest)
+rbl_convert_ipv6(const struct sockaddr_in6 *sa, rbl_revip *dest)
 {
+	/* Check the required parameters for valid values. sa and dest are both
+	 * mandatory and MUST NOT be null. */
+	assert(sa);
+	assert(dest);
+
+
 	/* This loop will concatenate all IPv6 octets in hexadecimal notation in
 	 * reverse order. */
 	int i, num;
