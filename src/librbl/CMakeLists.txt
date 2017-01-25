@@ -26,7 +26,10 @@
 add_library(rbl_shared SHARED
 	atoip.c
 	lookup.c
+	lookup_txt.c
 )
+
+target_link_libraries(rbl_shared resolv)
 
 set_target_properties(rbl_shared PROPERTIES
 	VERSION 0.1
@@ -41,6 +44,7 @@ set_target_properties(rbl_shared PROPERTIES
 add_library(rbl_static STATIC
 	atoip.c
 	lookup.c
+	lookup_txt.c
 )
 
 set_target_properties(rbl_static PROPERTIES
