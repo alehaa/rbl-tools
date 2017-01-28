@@ -48,6 +48,13 @@ typedef struct rbl_revip
 } rbl_revip;
 
 
+/** \defgroup rbl_lookup Lookup an IP in a realtime blackhole list.
+ *
+ * \par Header files:
+ *  \#include <rbl.h>
+ * \{
+ */
+
 RBL_FUNCTION_ARG_NONNULL(1, 2)
 int rbl_atoip(const char *src, rbl_revip *dest);
 
@@ -61,5 +68,6 @@ int rbl_lookup_txt(const rbl_revip *ip, const char *rbl_domain, char *dest,
 RBL_FUNCTION_ARG_NONNULL(1, 2)
 int rbl_lookup(const char *ip, const char *rbl_domain);
 
+/** \} */
 
 #endif

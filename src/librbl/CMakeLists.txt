@@ -19,6 +19,14 @@
 #  2015-2017 Alexander Haase <ahaase@mksec.de>
 #
 
+include(rbl_doc)
+
+
+# Install the public man pages for this object.
+rbl_add_man(rbl_lookup rbl_atoip)
+rbl_add_man(rbl_lookup rbl_lookup_a)
+rbl_add_man(rbl_lookup rbl_lookup_txt)
+
 
 #
 # build shared library

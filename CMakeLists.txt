@@ -41,10 +41,17 @@ if (POLICY CMP0042)
 endif (POLICY CMP0042)
 
 
+# Set the module search path to include local modules.
+set(CMAKE_MODULE_PATH
+  "${PROJECT_SOURCE_DIR}/cmake"
+  ${CMAKE_MODULE_PATH})
+
+
 #
 # recurse into subdirectories
 #
 add_subdirectory(conf)
+add_subdirectory(doc)
 add_subdirectory(src)
 
 

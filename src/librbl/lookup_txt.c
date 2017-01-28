@@ -41,7 +41,7 @@
  * \param ip The IP to lookup, reverse formatted by \ref rbl_atoip.
  * \param rbl_domain The domain of the RBL to be checked.
  * \param [out] dest Where to store the data of the TXT record.
- * \param num Size of \ref dest.
+ * \param num Size of \p dest.
  *
  * \return Returns positive value, if \p ip is listed in \p rbl_domain or zero
  *  if it is not listed. On error a negative value will be returned.
