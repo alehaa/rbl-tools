@@ -19,6 +19,7 @@
 #  2015-2017 Alexander Haase <ahaase@mksec.de>
 #
 
+include(easylib)
 include(rbl_doc)
 
 
@@ -28,15 +29,13 @@ rbl_add_man(rbl_lookup rbl_lookup_a)
 rbl_add_man(rbl_lookup rbl_lookup_txt)
 
 
+# Build library
 #
-# build shared library
-#
-add_library(rbl_shared SHARED
+easy_add_library(rbl
 	atoip.c
 	lookup.c
 	lookup_a.c
-	lookup_txt.c
-)
+	lookup_txt.c)
 
 target_link_libraries(rbl_shared resolv)
 
@@ -47,33 +46,9 @@ set_target_properties(rbl_shared PROPERTIES
 )
 
 
-#
-# build static library
-#
-add_library(rbl_static STATIC
-	atoip.c
-	lookup.c
-	lookup_a.c
-	lookup_txt.c
-)
-
-set_target_properties(rbl_static PROPERTIES
-	OUTPUT_NAME rbl
-)
-
-
-
-#
-# install libraries
+# Install libraries and header.
 #
 install(TARGETS rbl_shared rbl_static
 	LIBRARY DESTINATION lib
-	ARCHIVE DESTINATION lib
-)
-
-
-#
-# install header
-#
-install(FILES rbl.h DESTINATION include
-)
+	ARCHIVE DESTINATION lib)
+install(FILES rbl.h DESTINATION include)
