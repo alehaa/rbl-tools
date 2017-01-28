@@ -58,5 +58,8 @@ RBL_FUNCTION_ARG_NONNULL(1, 2, 3)
 int rbl_lookup_txt(const rbl_revip *ip, const char *rbl_domain, char *dest,
                    const size_t num);
 
+RBL_FUNCTION_ARG_NONNULL(1, 2)
+int rbl_lookup(const char *ip, const char *rbl_domain);
+
 
 #endif
