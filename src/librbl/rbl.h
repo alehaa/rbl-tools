@@ -34,7 +34,7 @@ typedef struct rbl_revip
 } rbl_revip;
 
 
-int rbl_lookup(rbl_revip *ip, const char *rbl_domain, char *desc);
+int rbl_lookup(rbl_revip *ip, const char *rbl_domain);
 int rbl_atoip(const char *src, rbl_revip *dest);
 
 int rbl_lookup_txt(const rbl_revip *ip, const char *rbl_domain, char *dest,

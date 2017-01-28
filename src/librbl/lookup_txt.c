@@ -33,6 +33,10 @@
  *  link in the TXT record. This function will lookup the TXT record and write
  *  its content to \p dest.
  *
+ * \note If the used DNSBL provides a TXT record for all matching IPs, there is
+ *  no need to call \ref rbl_lookup before. A call to this function is
+ *  sufficient and will return the same result.
+ *
  *
  * \param ip The IP to lookup, reverse formatted by \ref rbl_atoip.
  * \param rbl_domain The domain of the RBL to be checked.

@@ -19,15 +19,10 @@
  *  2015-2017 Alexander Haase <ahaase@mksec.de>
  */
 
-
-/* include headers
- */
 #include "rbl.h"
 
 #include <assert.h>
-#include <netdb.h>
-#include <stdio.h>
-#include <string.h>
+#include <resolv.h>
 
 
 /** \brief Lookup \p ip in \p rbl_domain and return the result.
@@ -37,38 +32,31 @@
  *  buffer if it is avivable. This is only usefull for software that is used
  *  interacive.
  *
- * \param ip Reverse dotted IP (v4 or v6)
- * \param rbl_domain The RBL domain to be used
- * \param desc Buffer to store additional information about RBL entry
+ *
+ * \param ip The IP to lookup, reverse formatted by \ref rbl_atoip.
+ * \param rbl_domain The domain of the RBL to be checked.
  *
  * \return Returns positive value, if \p ip is listed in \p rbl_domain or zero
  *  if it is not listed. On error a negative value will be returned.
  */
 int
-rbl_lookup(rbl_revip *ip, const char *rbl_domain, char *desc)
+rbl_lookup(rbl_revip *ip, const char *rbl_domain)
 {
-	// check, if ip or rbl_domain are NULL (must not be NULL)
+	/* Check the required parameters for valid values. All parameters are
+	 * mandatory and MUST NOT be null. */
 	assert(ip);
 	assert(rbl_domain);
 
 
-	// construct rbl lookup domain
-	char rbl_lookup_domain[strlen(ip->r_ip) + strlen(rbl_domain) + 2];
-	sprintf(rbl_lookup_domain, "%s.%s", ip->r_ip, rbl_domain);
+	/* Fire a new DNS query for the IP in the DNSBL. The domain to be queried is
+	 * the reverse formatted IP concatenated with the DNSBL domain. If the
+	 * domain has no TXT record or an error occured, an failure / error code
+	 * will be returned. */
+	unsigned char response[NS_PACKETSZ];
+	int response_len = res_querydomain(ip->r_ip, rbl_domain, ns_c_in, ns_t_a,
+	                                   response, NS_PACKETSZ);
 
-
-	// lookup rbl
-	struct hostent *he = gethostbyname(rbl_lookup_domain);
-
-	if (he != NULL)
-		// ip is on blacklist
-		return 1;
-
-	else if (h_errno == HOST_NOT_FOUND)
-		// ip is not on blacklist
-		return 0;
-
-	else
-		// an error occured
-		return -1;
+	/* First check for an error, then check if an A resource record was found or
+	 * not. */
+	return (response_len == NS_PACKETSZ) ? -1 : (response_len < 0) ? 0 : 1;
 }
