@@ -25,6 +25,8 @@
 
 #include <stddef.h>
 
+#include <arpa/inet.h>
+
 
 /** \brief Mark function arguments as nonnull.
  *
@@ -50,7 +52,7 @@ RBL_FUNCTION_ARG_NONNULL(1, 2)
 int rbl_atoip(const char *src, rbl_revip *dest);
 
 RBL_FUNCTION_ARG_NONNULL(1, 2)
-int rbl_lookup(rbl_revip *ip, const char *rbl_domain);
+int rbl_lookup_a(rbl_revip *ip, const char *rbl_domain, const in_addr_t *match);
 
 RBL_FUNCTION_ARG_NONNULL(1, 2, 3)
 int rbl_lookup_txt(const rbl_revip *ip, const char *rbl_domain, char *dest,

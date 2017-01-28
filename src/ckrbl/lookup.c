@@ -50,7 +50,7 @@ int
 lookup(rbl_revip *ip, const char *rbl_domain)
 {
 	// do the rbl lookup
-	int ret = rbl_lookup(ip, rbl_domain);
+	int ret = rbl_lookup_a(ip, rbl_domain, NULL);
 
 	// evaluate rbl lookup
 	char *color = ANSI_COLOR_RED;
