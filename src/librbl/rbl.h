@@ -26,6 +26,18 @@
 #include <stddef.h>
 
 
+/** \brief Mark function arguments as nonnull.
+ *
+ *
+ * \param ... List of arguments that should be nonnull.
+ */
+#if defined(__GNUC__) || defined(__clang__)
+#define RBL_FUNCTION_ARG_NONNULL(...) __attribute__((nonnull(__VA_ARGS__)))
+#else
+#define RBL_FUNCTION_ARG_NONNULL(...)
+#endif
+
+
 /** \brief Datatyype for storing the reverse formatted IP.
  */
 typedef struct rbl_revip
@@ -34,9 +46,13 @@ typedef struct rbl_revip
 } rbl_revip;
 
 
-int rbl_lookup(rbl_revip *ip, const char *rbl_domain);
+RBL_FUNCTION_ARG_NONNULL(1, 2)
 int rbl_atoip(const char *src, rbl_revip *dest);
 
+RBL_FUNCTION_ARG_NONNULL(1, 2)
+int rbl_lookup(rbl_revip *ip, const char *rbl_domain);
+
+RBL_FUNCTION_ARG_NONNULL(1, 2, 3)
 int rbl_lookup_txt(const rbl_revip *ip, const char *rbl_domain, char *dest,
                    const size_t num);
 
