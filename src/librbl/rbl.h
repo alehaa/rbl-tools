@@ -48,6 +48,13 @@ typedef struct rbl_revip
 } rbl_revip;
 
 
+/* The API should be C++ compatible, too. We have to add the extern "C" stanza
+ * to avoid name mangeling. */
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 /** \defgroup rbl_lookup Lookup an IP in a realtime blackhole list.
  *
  * \par Header files:
@@ -69,5 +76,11 @@ RBL_FUNCTION_ARG_NONNULL(1, 2)
 int rbl_lookup(const char *ip, const char *rbl_domain);
 
 /** \} */
+
+
+#ifdef __cplusplus
+}
+#endif
+
 
 #endif
