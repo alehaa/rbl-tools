@@ -145,3 +145,27 @@ rbl_add_test(test_librbl_lookup_txt_listed
 rbl_add_test(test_librbl_lookup_txt_not_listed
 	COMMAND test_librbl_lookup_txt 0.0.0.0 zen.spamhaus.org
 	PASS_EXPRESSION "is not listed")
+
+
+#
+# rbl_lookup
+#
+
+add_executable(test_librbl_lookup lookup.c)
+target_link_libraries(test_librbl_lookup rbl_shared)
+
+rbl_add_test(librbl_lookup_invalid_ipv4
+	COMMAND test_librbl_atoip 1.2.3
+	PASS_EXPRESSION "IP not valid")
+
+rbl_add_test(librbl_lookup_invalid_ipv6
+	COMMAND test_librbl_atoip 1::1::1
+	PASS_EXPRESSION "IP not valid")
+
+rbl_add_test(test_librbl_lookup_listed
+	COMMAND test_librbl_lookup 127.0.0.2 zen.spamhaus.org
+	PASS_EXPRESSION "is listed")
+
+rbl_add_test(test_librbl_lookup_not_listed
+	COMMAND test_librbl_lookup 0.0.0.0 zen.spamhaus.org
+	PASS_EXPRESSION "is not listed")
