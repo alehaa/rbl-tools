@@ -4,3 +4,9 @@
 [submodule "externals/CMake-gitinfo"]
 	path = externals/CMake-gitinfo
 	url = git://github.com/RWTH-ELP/CMake-gitinfo.git
+[submodule "externals/sanitizers-cmake"]
+	path = externals/sanitizers-cmake
+	url = git://github.com/arsenm/sanitizers-cmake.git
+[submodule "externals/CMake-codecov"]
+	path = externals/CMake-codecov
+	url = git://github.com/RWTH-ELP/CMake-codecov.git

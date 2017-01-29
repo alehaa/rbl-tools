@@ -21,6 +21,9 @@
 
 include(GNUInstallDirs)
 
+find_package(codecov)
+find_package(Sanitizers)
+
 
 #
 # configure headers
@@ -48,6 +51,9 @@ target_include_directories(ckrbl PUBLIC
 target_link_libraries(ckrbl
 	rbl_shared
 )
+
+add_coverage(ckrbl)
+add_sanitizers(ckrbl)
 
 
 #

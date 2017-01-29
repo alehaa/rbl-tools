@@ -23,6 +23,9 @@ include(easylib)
 include(GNUInstallDirs)
 include(rbl_doc)
 
+find_package(codecov)
+find_package(Sanitizers)
+
 
 # Install the public man pages for this object.
 rbl_add_man(rbl_lookup rbl_atoip)
@@ -39,6 +42,9 @@ easy_add_library(rbl
 	lookup_txt.c)
 
 target_link_libraries(rbl_shared resolv)
+
+add_coverage(rbl_shared)
+add_sanitizers(rbl_shared)
 
 set_target_properties(rbl_shared PROPERTIES
 	VERSION "${RBL_MAJOR_VERSION}.${RBL_MINOR_VERSION}.${RBL_PATCH_VERSION}"

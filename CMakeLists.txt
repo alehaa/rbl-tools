@@ -42,8 +42,10 @@ endif ()
 # Set the module search path to include local modules.
 set(CMAKE_MODULE_PATH
 	"${PROJECT_SOURCE_DIR}/cmake"
+	"${PROJECT_SOURCE_DIR}/externals/CMake-codecov/cmake"
 	"${PROJECT_SOURCE_DIR}/externals/CMake-easylib/cmake"
 	"${PROJECT_SOURCE_DIR}/externals/CMake-gitinfo/cmake"
+	"${PROJECT_SOURCE_DIR}/externals/sanitizers-cmake/cmake"
 	${CMAKE_MODULE_PATH})
 
 

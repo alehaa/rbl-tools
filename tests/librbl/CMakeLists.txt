@@ -19,6 +19,10 @@
 #  2015-2017 Alexander Haase <ahaase@mksec.de>
 #
 
+find_package(codecov)
+find_package(Sanitizers)
+
+
 include_directories(../../src/librbl)
 
 
@@ -28,6 +32,9 @@ include_directories(../../src/librbl)
 
 add_executable(test_librbl_atoip atoip.c)
 target_link_libraries(test_librbl_atoip rbl_shared)
+
+add_coverage(test_librbl_atoip)
+add_sanitizers(test_librbl_atoip)
 
 #
 # IPv4
@@ -112,6 +119,9 @@ rbl_add_test(librbl_atoip_ipv6_valid_simple2
 add_executable(test_librbl_lookup_a lookup_a.c)
 target_link_libraries(test_librbl_lookup_a rbl_shared)
 
+add_coverage(test_librbl_lookup_a)
+add_sanitizers(test_librbl_lookup_a)
+
 # Check without match
 rbl_add_test(test_librbl_lookup_a_listed
 	COMMAND test_librbl_lookup_a 127.0.0.2 zen.spamhaus.org
@@ -138,6 +148,9 @@ rbl_add_test(test_librbl_lookup_a_no_match
 add_executable(test_librbl_lookup_txt lookup_txt.c)
 target_link_libraries(test_librbl_lookup_txt rbl_shared)
 
+add_coverage(test_librbl_lookup_txt)
+add_sanitizers(test_librbl_lookup_txt)
+
 rbl_add_test(test_librbl_lookup_txt_listed
 	COMMAND test_librbl_lookup_txt 127.0.0.2 zen.spamhaus.org
 	PASS_EXPRESSION "TXT: https://www.spamhaus.org/")
@@ -153,6 +166,9 @@ rbl_add_test(test_librbl_lookup_txt_not_listed
 
 add_executable(test_librbl_lookup lookup.c)
 target_link_libraries(test_librbl_lookup rbl_shared)
+
+add_coverage(test_librbl_lookup)
+add_sanitizers(test_librbl_lookup)
 
 rbl_add_test(librbl_lookup_invalid_ipv4
 	COMMAND test_librbl_atoip 1.2.3
