@@ -171,12 +171,12 @@ add_coverage(test_librbl_lookup)
 add_sanitizers(test_librbl_lookup)
 
 rbl_add_test(librbl_lookup_invalid_ipv4
-	COMMAND test_librbl_atoip 1.2.3
-	PASS_EXPRESSION "IP not valid")
+	COMMAND test_librbl_lookup 1.2.3 zen.spamhaus.org
+	PASS_EXPRESSION "error")
 
 rbl_add_test(librbl_lookup_invalid_ipv6
-	COMMAND test_librbl_atoip 1::1::1
-	PASS_EXPRESSION "IP not valid")
+	COMMAND test_librbl_lookup 1::1::1 zen.spamhaus.org
+	PASS_EXPRESSION "error")
 
 rbl_add_test(test_librbl_lookup_listed
 	COMMAND test_librbl_lookup 127.0.0.2 zen.spamhaus.org
