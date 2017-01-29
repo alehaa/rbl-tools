@@ -22,9 +22,12 @@
 include_directories(../../src/librbl)
 
 
+#
+# rbl_atoip
+#
+
 add_executable(test_librbl_atoip atoip.c)
 target_link_libraries(test_librbl_atoip rbl_shared)
-
 
 #
 # IPv4
@@ -33,35 +36,34 @@ target_link_libraries(test_librbl_atoip rbl_shared)
 # Check incorrect length.
 rbl_add_test(librbl_atoip_ipv4_missing1
 	COMMAND test_librbl_atoip 1
-	PROPERTIES PASS_EXPRESSION "IP not valid")
+	PASS_EXPRESSION "IP not valid")
 
 rbl_add_test(librbl_atoip_ipv4_missing2
 	COMMAND test_librbl_atoip 1.2
-	PROPERTIES PASS_EXPRESSION "IP not valid")
+	PASS_EXPRESSION "IP not valid")
 
 rbl_add_test(librbl_atoip_ipv4_missing3
 	COMMAND test_librbl_atoip 1.2.3
-	PROPERTIES PASS_EXPRESSION "IP not valid")
+	PASS_EXPRESSION "IP not valid")
 
 rbl_add_test(librbl_atoip_ipv4_toolong
 	COMMAND test_librbl_atoip 1.2.3.4.5
-	PROPERTIES PASS_EXPRESSION "IP not valid")
+	PASS_EXPRESSION "IP not valid")
 
 # An invalid IP with one group > 255.
 rbl_add_test(librbl_atoip_ipv4_invalid_digits
 	COMMAND test_librbl_atoip 255.255.255.256
-	PROPERTIES PASS_EXPRESSION "IP not valid")
+	PASS_EXPRESSION "IP not valid")
 
 # A valid IP with no bits set.
 rbl_add_test(librbl_atoip_ipv4_valid_empty
 	COMMAND test_librbl_atoip 0.0.0.0
-	PROPERTIES PASS_EXPRESSION "0.0.0.0")
+	PASS_EXPRESSION "0.0.0.0")
 
 # A valid sample IP.
 rbl_add_test(librbl_atoip_ipv4_valid_simple
 	COMMAND test_librbl_atoip 1.2.3.4
-	PROPERTIES PASS_EXPRESSION "4.3.2.1")
-
+	PASS_EXPRESSION "4.3.2.1")
 
 #
 # IPv6
@@ -70,34 +72,34 @@ rbl_add_test(librbl_atoip_ipv4_valid_simple
 # Check incorrect length.
 rbl_add_test(librbl_atoip_ipv6_missing1
 	COMMAND test_librbl_atoip 0
-	PROPERTIES PASS_EXPRESSION "IP not valid")
+	PASS_EXPRESSION "IP not valid")
 
 rbl_add_test(librbl_atoip_ipv6_missing2
 	COMMAND test_librbl_atoip 0:0
-	PROPERTIES PASS_EXPRESSION "IP not valid")
+	PASS_EXPRESSION "IP not valid")
 
 # Invalid shortening of IP.
 rbl_add_test(librbl_atoip_ipv6_invalid_shortening
 	COMMAND test_librbl_atoip 1::1::1
-	PROPERTIES PASS_EXPRESSION "IP not valid")
+	PASS_EXPRESSION "IP not valid")
 
 # Invalid charset
 rbl_add_test(librbl_atoip_ipv6_invalid_chars
 	COMMAND test_librbl_atoip ::g
-	PROPERTIES PASS_EXPRESSION "IP not valid")
+	PASS_EXPRESSION "IP not valid")
 
 # Valid examples
 rbl_add_test(librbl_atoip_ipv6_valid_empty
 	COMMAND test_librbl_atoip ::
-	PROPERTIES PASS_EXPRESSION
+	PASS_EXPRESSION
 		"0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0")
 
 rbl_add_test(librbl_atoip_ipv6_valid_simple1
 	COMMAND test_librbl_atoip ::1:2:3:4
-	PROPERTIES PASS_EXPRESSION
-	"4.0.0.0.3.0.0.0.2.0.0.0.1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0")
+	PASS_EXPRESSION
+		"4.0.0.0.3.0.0.0.2.0.0.0.1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0")
 
 rbl_add_test(librbl_atoip_ipv6_valid_simple2
 	COMMAND test_librbl_atoip 1::2
-	PROPERTIES PASS_EXPRESSION
-	"2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1.0.0.0")
+	PASS_EXPRESSION
+		"2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1.0.0.0")
