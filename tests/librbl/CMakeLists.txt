@@ -129,3 +129,19 @@ rbl_add_test(test_librbl_lookup_a_match
 rbl_add_test(test_librbl_lookup_a_no_match
 	COMMAND test_librbl_lookup_a 127.0.0.2 zen.spamhaus.org 0.0.0.0
 	PASS_EXPRESSION "is not listed")
+
+
+#
+# rbl_lookup_txt
+#
+
+add_executable(test_librbl_lookup_txt lookup_txt.c)
+target_link_libraries(test_librbl_lookup_txt rbl_shared)
+
+rbl_add_test(test_librbl_lookup_txt_listed
+	COMMAND test_librbl_lookup_txt 127.0.0.2 zen.spamhaus.org
+	PASS_EXPRESSION "TXT: https://www.spamhaus.org/")
+
+rbl_add_test(test_librbl_lookup_txt_not_listed
+	COMMAND test_librbl_lookup_txt 0.0.0.0 zen.spamhaus.org
+	PASS_EXPRESSION "is not listed")
