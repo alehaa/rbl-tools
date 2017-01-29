@@ -82,6 +82,7 @@ rbl_lookup_txt(const rbl_revip *ip, const char *rbl_domain, char *dest,
 		ns_rr rr;
 		if (ns_parserr(&handle, ns_s_an, 0, &rr) == 0) {
 			strncpy(dest, (char *)ns_rr_rdata(rr) + 1, num);
+			dest[num - 1] = '\0';
 			return 1;
 		}
 	}
