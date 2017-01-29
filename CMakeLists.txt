@@ -19,43 +19,47 @@
 #  2015-2017 Alexander Haase <ahaase@mksec.de>
 #
 
-
-# minimum required cmake version
+# Minimum required cmake version.
 cmake_minimum_required(VERSION 2.8.11)
 
 
-#
-# project information
-#
+# Set policies.
+foreach (POL CMP0042 CMP0048)
+	if (POLICY ${POL})
+		cmake_policy(SET ${POL} NEW)
+	endif ()
+endforeach ()
+
+
+# Project information.
 if (${CMAKE_MAJOR_VERSION} EQUAL 3)
-	project("rbl-tools" LANGUAGES C)
+	project("RBL" LANGUAGES C)
 else ()
-	project("rbl-tools" C)
+	project("RBL" C)
 endif ()
-
-
-# choose new behaviour for CMP0042
-# see http://www.cmake.org/cmake/help/v3.0/policy/CMP0042.html for more details
-if (POLICY CMP0042)
-	cmake_policy(SET CMP0042 NEW)
-endif (POLICY CMP0042)
 
 
 # Set the module search path to include local modules.
 set(CMAKE_MODULE_PATH
 	"${PROJECT_SOURCE_DIR}/cmake"
 	"${PROJECT_SOURCE_DIR}/externals/CMake-easylib/cmake"
+	"${PROJECT_SOURCE_DIR}/externals/CMake-gitinfo/cmake"
 	${CMAKE_MODULE_PATH})
 
 
-#
-# recurse into subdirectories
-#
+# Project version.
+find_package(GitInfo REQUIRED)
+git_version_info(REQUIRED)
+message(STATUS "Configuring version ${RBL_VERSION}")
+
+
+
+# Recurse into subdirectories.
 add_subdirectory(conf)
 add_subdirectory(doc)
 add_subdirectory(src)
 
-
+# Tests.
 option(ENABLE_TESTS "Selects whether tests are built." false)
 if (ENABLE_TESTS)
 	enable_testing()

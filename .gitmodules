@@ -1,3 +1,6 @@
 [submodule "externals/CMake-easylib"]
 	path = externals/CMake-easylib
 	url = git://github.com/alehaa/CMake-easylib.git
+[submodule "externals/CMake-gitinfo"]
+	path = externals/CMake-gitinfo
+	url = git://github.com/RWTH-ELP/CMake-gitinfo.git

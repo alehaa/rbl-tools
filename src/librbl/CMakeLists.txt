@@ -40,10 +40,8 @@ easy_add_library(rbl
 target_link_libraries(rbl_shared resolv)
 
 set_target_properties(rbl_shared PROPERTIES
-	VERSION 0.1
-	SOVERSION 0
-	OUTPUT_NAME rbl
-)
+	VERSION "${RBL_MAJOR_VERSION}.${RBL_MINOR_VERSION}.${RBL_PATCH_VERSION}"
+	SOVERSION ${RBL_MAJOR_VERSION})
 
 
 # Install libraries and header.
