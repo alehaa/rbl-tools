@@ -19,5 +19,8 @@
 #  2015-2017 Alexander Haase <ahaase@mksec.de>
 #
 
+include(GNUInstallDirs)
+
+
 # install rbl.conf
-install(FILES rbl.conf DESTINATION etc)
+install(FILES rbl.conf DESTINATION ${CMAKE_INSTALL_SYSCONFDIR})

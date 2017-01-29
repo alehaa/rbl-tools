@@ -20,6 +20,7 @@
 #
 
 include(easylib)
+include(GNUInstallDirs)
 include(rbl_doc)
 
 
@@ -47,6 +48,6 @@ set_target_properties(rbl_shared PROPERTIES
 # Install libraries and header.
 #
 install(TARGETS rbl_shared rbl_static
-	LIBRARY DESTINATION lib
-	ARCHIVE DESTINATION lib)
-install(FILES rbl.h DESTINATION include)
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(FILES rbl.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})

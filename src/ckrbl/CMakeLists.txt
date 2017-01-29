@@ -19,6 +19,8 @@
 #  2015-2017 Alexander Haase <ahaase@mksec.de>
 #
 
+include(GNUInstallDirs)
+
 
 #
 # configure headers
@@ -52,5 +54,5 @@ target_link_libraries(ckrbl
 # install ckrbl
 #
 install(TARGETS ckrbl
-	DESTINATION bin
+	DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
