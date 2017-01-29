@@ -103,3 +103,29 @@ rbl_add_test(librbl_atoip_ipv6_valid_simple2
 	COMMAND test_librbl_atoip 1::2
 	PASS_EXPRESSION
 		"2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1.0.0.0")
+
+
+#
+# rbl_lookup_a
+#
+
+add_executable(test_librbl_lookup_a lookup_a.c)
+target_link_libraries(test_librbl_lookup_a rbl_shared)
+
+# Check without match
+rbl_add_test(test_librbl_lookup_a_listed
+	COMMAND test_librbl_lookup_a 127.0.0.2 zen.spamhaus.org
+	PASS_EXPRESSION "is listed")
+
+rbl_add_test(test_librbl_lookup_a_not_listed
+	COMMAND test_librbl_lookup_a 0.0.0.0 zen.spamhaus.org
+	PASS_EXPRESSION "is not listed")
+
+rbl_add_test(test_librbl_lookup_a_match
+	COMMAND test_librbl_lookup_a 127.0.0.2 zen.spamhaus.org
+		127.0.0.2 127.0.0.4 127.0.0.10
+	PASS_EXPRESSION "is listed")
+
+rbl_add_test(test_librbl_lookup_a_no_match
+	COMMAND test_librbl_lookup_a 127.0.0.2 zen.spamhaus.org 0.0.0.0
+	PASS_EXPRESSION "is not listed")
