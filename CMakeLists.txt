@@ -42,6 +42,7 @@ endif ()
 # Set the module search path to include local modules.
 set(CMAKE_MODULE_PATH
 	"${PROJECT_SOURCE_DIR}/cmake"
+	"${PROJECT_SOURCE_DIR}/externals/CMake-CChelper/cmake"
 	"${PROJECT_SOURCE_DIR}/externals/CMake-codecov/cmake"
 	"${PROJECT_SOURCE_DIR}/externals/CMake-easylib/cmake"
 	"${PROJECT_SOURCE_DIR}/externals/CMake-gitinfo/cmake"
@@ -54,6 +55,9 @@ find_package(GitInfo REQUIRED)
 git_version_info(REQUIRED)
 message(STATUS "Configuring version ${RBL_VERSION}")
 
+
+# Enable CCHelpers.
+include(CChelper)
 
 
 # Recurse into subdirectories.

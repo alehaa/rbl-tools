@@ -10,3 +10,6 @@
 [submodule "externals/CMake-codecov"]
 	path = externals/CMake-codecov
 	url = git://github.com/RWTH-ELP/CMake-codecov.git
+[submodule "externals/CMake-CChelper"]
+	path = externals/CMake-CChelper
+	url = git://github.com/alehaa/CMake-CChelper.git
