@@ -4,6 +4,7 @@
 [![Codecov](https://img.shields.io/codecov/c/github/alehaa/rbl-tools.svg?style=flat-square)](https://codecov.io/github/alehaa/rbl-tools?branch=master)
 [![](https://img.shields.io/github/issues-raw/alehaa/rbl-tools.svg?style=flat-square)](https://github.com/alehaa/rbl-tools/issues)
 [![GPL license](http://img.shields.io/badge/license-GPL-blue.svg?style=flat-square)](LICENSE)
+![C89 standard](http://img.shields.io/badge/standard-C99-blue.svg?style=flat-square)
 
 *Library and toolset for checking realtime blackhole lists*
 

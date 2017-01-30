@@ -56,8 +56,10 @@ git_version_info(REQUIRED)
 message(STATUS "Configuring version ${RBL_VERSION}")
 
 
-# Enable CCHelpers.
+# Enable CCHelpers and set C99 standard.
 include(CChelper)
+find_package(C99 REQUIRED)
+add_definitions(${C99_FLAGS})
 
 
 # Recurse into subdirectories.
