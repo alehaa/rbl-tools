@@ -153,7 +153,7 @@ add_sanitizers(test_librbl_lookup_txt)
 
 rbl_add_test(test_librbl_lookup_txt_listed
 	COMMAND test_librbl_lookup_txt 127.0.0.2 zen.spamhaus.org
-	PASS_EXPRESSION "TXT: https://www.spamhaus.org/")
+	PASS_EXPRESSION "TXT: https://www.spamhaus.org/sbl/query/SBL2")
 
 rbl_add_test(test_librbl_lookup_txt_not_listed
 	COMMAND test_librbl_lookup_txt 0.0.0.0 zen.spamhaus.org

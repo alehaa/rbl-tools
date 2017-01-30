@@ -33,6 +33,9 @@
  *  link in the TXT record. This function will lookup the TXT record and write
  *  its content to \p dest.
  *
+ * \note If there is more than one matching TXT record, all found records will
+ *  be copied into \p dest, delimited by a newline character.
+ *
  * \note If the used DNSBL provides a TXT record for all matching IPs, there is
  *  no need to call \ref rbl_lookup before. A call to this function is
  *  sufficient and will return the same result.
@@ -79,12 +82,30 @@ rbl_lookup_txt(const rbl_revip *ip, const char *rbl_domain, char *dest,
 	 * http://stackoverflow.com/a/11658242 the first byte has to be ignored. */
 	ns_msg handle;
 	if (ns_initparse(response, response_len, &handle) == 0) {
-		ns_rr rr;
-		if (ns_parserr(&handle, ns_s_an, 0, &rr) == 0) {
-			strncpy(dest, (char *)ns_rr_rdata(rr) + 1, num);
-			dest[num - 1] = '\0';
-			return 1;
-		}
+		char *p = dest;
+		size_t p_num = num;
+		uint16_t n = ns_msg_count(handle, ns_s_an);
+		do {
+			ns_rr rr;
+			if (ns_parserr(&handle, ns_s_an, n - 1, &rr) == 0) {
+				/* Check if dest is large enough to store the content of the TXT
+				 * resource record. If not return an error. */
+				uint8_t len = *(ns_rr_rdata(rr));
+				if (len + 1 > p_num)
+					return -1;
+
+				/* Copy string into dest and update pointers. */
+				strncpy(p, (char *)ns_rr_rdata(rr) + 1, len);
+				p[len] = '\n';
+				p += len + 1;
+			} else
+				/* An error occured while parsing the n'th resource record. */
+				return -1;
+		} while (--n);
+
+		/* All found records have been successfully parsed and stored into dest
+		 * buffer. */
+		return 1;
 	}
 
 	/* An error occured while parsing the resource record. */

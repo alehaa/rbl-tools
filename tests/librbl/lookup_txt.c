@@ -26,6 +26,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <rbl.h>
 
@@ -59,6 +60,13 @@ main(int argc, char **argv)
 		fprintf(stderr, "An error occured while looking IP up in rbl.\n");
 	else if (ret == 0)
 		printf("%s is not listed in %s.\n", argv[1], argv[2]);
-	else
-		printf("%s is listed in %s.\nTXT: %s\n", argv[1], argv[2], buffer);
+	else {
+		printf("%s is listed in %s.\n", argv[1], argv[2]);
+
+		char *p = strtok(buffer, "\n");
+		while (p != NULL) {
+			printf("TXT: %s\n", p);
+			p = strtok(NULL, "\n");
+		}
+	}
 }

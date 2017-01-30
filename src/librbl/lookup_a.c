@@ -70,19 +70,22 @@ rbl_lookup_a(rbl_revip *ip, const char *rbl_domain, const in_addr_t *match)
 	 * these match return a positive match. */
 	ns_msg handle;
 	if (ns_initparse(response, response_len, &handle) == 0) {
-		ns_rr rr;
-		if (ns_parserr(&handle, ns_s_an, 0, &rr) == 0) {
-			/* Convert the DNS response data to an IPv4 (as 32 bit integer aka
-			 * in_addr_t). */
-			in_addr_t rr_a = ns_get32(ns_rr_rdata(rr));
+		uint16_t n = ns_msg_count(handle, ns_s_an);
+		do {
+			ns_rr rr;
+			if (ns_parserr(&handle, ns_s_an, n - 1, &rr) == 0) {
+				/* Convert the DNS response data to an IPv4 (as 32 bit integer
+				 * aka in_addr_t). */
+				in_addr_t rr_a = ns_get32(ns_rr_rdata(rr));
 
-			/* Iterate over the match array and check for matches. If the IPs
-			 * match, a found result will be returned. */
-			in_addr_t *iter;
-			for (iter = (in_addr_t *)match; *iter; iter++)
-				if (*iter == rr_a)
-					return 1;
-		}
+				/* Iterate over the match array and check for matches. If the
+				 * IPs match, a found result will be returned. */
+				in_addr_t *iter;
+				for (iter = (in_addr_t *)match; *iter; iter++)
+					if (*iter == rr_a)
+						return 1;
+			}
+		} while (--n);
 	}
 
 	/* The IP was listet in the DNSBL, but the returned A record did not match
